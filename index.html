@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sofia Emeralda Susilo | Portfolio</title>
+<style>
+  :root {
+    --pink-100: #ffe4ef;
+    --pink-200: #ffc9de;
+    --pink-300: #ffa8c8;
+    --pink-500: #f06292;
+    --pink-700: #c2185b;
+    --pink-900: #7a1040;
+    --cream: #fff3d6;
+    --cream-dark: #f6e2b0;
+    --text: #5a1a35;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; overflow-x: hidden; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: linear-gradient(180deg, var(--pink-100), var(--pink-200) 50%, var(--pink-100));
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Scroll progress bar */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0;
+    background: var(--cream); z-index: 200;
+    box-shadow: 0 0 8px var(--pink-700);
+  }
+
+  /* Navbar */
+  nav {
+    position: fixed; top: 0; width: 100%;
+    display: flex; justify-content: center; gap: 12px;
+    padding: 14px 16px;
+    background: rgba(240, 98, 146, .88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    text-decoration: none; color: var(--pink-900);
+    background: var(--cream);
+    padding: 8px 18px; border-radius: 999px;
+    font-weight: 600; font-size: .9rem; white-space: nowrap;
+    transition: transform .2s, background .2s;
+  }
+  nav a:hover, nav a.active { transform: translateY(-2px); background: #fff; }
+
+  section {
+    min-height: 100vh;
+    padding: 110px 6% 60px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  h2.title { text-align: center; font-size: clamp(1.7rem, 5vw, 2.4rem); color: var(--pink-700); margin-bottom: 8px; }
+  p.subtitle { text-align: center; margin-bottom: 36px; opacity: .8; }
+
+  /* Buttons (cream) */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--cream); color: var(--pink-900);
+    border: 2px solid var(--cream-dark);
+    padding: 10px 20px; border-radius: 14px;
+    font-family: inherit; font-weight: 600; font-size: .95rem; text-decoration: none; cursor: pointer;
+    box-shadow: 0 4px 0 var(--cream-dark);
+    transition: transform .15s, box-shadow .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 7px 0 var(--cream-dark); }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--cream-dark); }
+  .btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+  /* ===== 1. PROFILE ===== */
+  #profile .card {
+    width: 100%; max-width: 780px; margin: 0 auto; text-align: center;
+    background: rgba(255,255,255,.45);
+    border: 2px solid rgba(255,255,255,.7);
+    border-radius: 32px; padding: clamp(28px, 6vw, 48px) clamp(18px, 5vw, 32px);
+    box-shadow: 0 20px 50px rgba(194, 24, 91, .2);
+  }
+  .photo {
+    width: clamp(120px, 32vw, 170px); height: clamp(120px, 32vw, 170px);
+    border-radius: 50%;
+    margin: 0 auto 20px; overflow: hidden;
+    border: 6px solid var(--cream);
+    box-shadow: 0 8px 24px rgba(194,24,91,.35);
+    background: var(--pink-300);
+    cursor: pointer; transition: transform .4s;
+  }
+  .photo:hover { transform: rotate(8deg) scale(1.06); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #profile h1 { font-size: clamp(1.7rem, 6vw, 2.5rem); color: var(--pink-700); line-height: 1.2; }
+  .role { font-weight: 600; color: var(--pink-500); margin: 8px 0 14px; font-size: clamp(.95rem, 3.2vw, 1.1rem); }
+  .bio { max-width: 600px; margin: 0 auto 28px; font-size: clamp(.92rem, 3vw, 1rem); }
+  .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+  .cv-box {
+    margin: 26px auto 0; max-width: 520px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    background: rgba(255,255,255,.6);
+    border: 2px dashed var(--pink-500); border-radius: 20px;
+    padding: 16px 18px; text-align: left;
+  }
+  .cv-info { display: flex; align-items: center; gap: 12px; }
+  .cv-icon { font-size: 2rem; }
+  .cv-info strong { display: block; color: var(--pink-700); line-height: 1.2; }
+  .cv-info small { opacity: .75; }
+  .cv-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cv-actions .btn { padding: 8px 16px; font-size: .88rem; }
+  .scroll-hint { margin-top: 30px; text-align: center; font-size: .9rem; animation: bounce 1.6s infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0);} 50% { transform: translateY(8px);} }
+
+  /* ===== 2. WHAT CAN I DO ===== */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 22px; max-width: 1000px; width: 100%; margin: 0 auto;
+  }
+  .skill {
+    background: rgba(255,255,255,.55);
+    border: 2px solid #fff; border-radius: 24px;
+    padding: 26px 20px; text-align: center; cursor: pointer;
+    transition: transform .25s, box-shadow .25s, background .25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .skill:hover { transform: translateY(-8px); box-shadow: 0 14px 30px rgba(194,24,91,.25); }
+  .skill .icon { font-size: 2.6rem; }
+  .skill h3 { color: var(--pink-700); margin-top: 8px; }
+  .skill .detail { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s, opacity .4s, margin .4s; font-size: .92rem; }
+  .skill.open { background: var(--cream); }
+  .skill.open .detail { max-height: 160px; opacity: 1; margin-top: 8px; }
+
+  /* ===== 3. PROJECTS ===== */
+  .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+  .filters .btn.active { background: #fff; border-color: var(--pink-500); }
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+    gap: 24px; max-width: 1050px; width: 100%; margin: 0 auto;
+  }
+  .project {
+    background: rgba(255,255,255,.6); border: 2px solid #fff; border-radius: 24px;
+    overflow: hidden; cursor: pointer;
+    transition: transform .25s, box-shadow .25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .project:hover { transform: translateY(-8px) rotate(-.6deg); box-shadow: 0 14px 30px rgba(194,24,91,.25); }
+  .project .thumb {
+    height: 150px; display: grid; place-items: center; font-size: 3.4rem;
+    background: linear-gradient(135deg, var(--pink-300), var(--pink-500));
+  }
+  .project .body { padding: 18px; }
+  .project h3 { color: var(--pink-700); margin-bottom: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { background: var(--cream); color: var(--pink-900); padding: 3px 10px; border-radius: 99px; font-size: .75rem; font-weight: 600; }
+  .project.hide { display: none; }
+
+  /* Modal */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(122,16,64,.55);
+    display: none; place-items: center; z-index: 300; padding: 20px;
+  }
+  .modal-bg.show { display: grid; }
+  .modal {
+    background: var(--pink-100); border-radius: 28px; padding: 28px; max-width: 480px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    border: 4px solid var(--cream); animation: pop .3s;
+  }
+  @keyframes pop { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal .mIcon { font-size: 2.6rem; text-align: center; }
+  .modal h3 { color: var(--pink-700); font-size: 1.4rem; margin: 6px 0 8px; text-align: center; }
+  .modal p { margin-bottom: 18px; }
+  .modal .actions { display: flex; justify-content: center; }
+
+  footer { text-align: center; padding: 28px 16px; font-size: .9rem; background: var(--pink-500); color: #fff; }
+
+  #toTop { position: fixed; right: 16px; bottom: 16px; opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 150; }
+  #toTop.show { opacity: 1; pointer-events: auto; }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s, transform .7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    section { min-height: auto; padding: 90px 5% 50px; }
+    #profile { min-height: 100vh; }
+    nav { gap: 8px; padding: 10px; justify-content: flex-start; }
+    nav a { padding: 7px 14px; font-size: .82rem; }
+    .btn { padding: 10px 16px; font-size: .9rem; }
+    .socials { gap: 10px; }
+    .socials .btn { flex: 1 1 calc(50% - 10px); }
+  }
+  @media (hover: none) {
+    .skill:hover, .project:hover, .photo:hover { transform: none; box-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .scroll-hint { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <a href="#profile" class="active">Profile</a>
+  <a href="#skills">What Can I Do</a>
+  <a href="#projects">Projects</a>
+</nav>
+
+<!-- ================= 1. PROFILE DASHBOARD ================= -->
+<section id="profile">
+  <div class="card reveal">
+    <!-- Put your photo in the same folder as this file and name it foto.jpg -->
+    <div class="photo" id="photo" title="Click me!">
+      <img src="foto.jpeg" alt="Photo of Sofia Emeralda Susilo"
+        onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%23ffa8c8%27/%3E%3Ctext x=%2750%27 y=%2763%27 font-size=%2738%27 text-anchor=%27middle%27 fill=%27%237a1040%27 font-family=%27Arial%27 font-weight=%27bold%27%3ESE%3C/text%3E%3C/svg%3E'">
+    </div>
+    <h1>Sofia Emeralda Susilo</h1>
+    <p class="role">Information Systems student at Universitas Negeri Surabaya</p>
+    <p class="bio">
+      I am an Information Systems student at UNESA with a strong interest in UI/UX Design. I aspire to create intuitive and visually appealing digital experiences by understanding user needs and combining creativity with technology. I enjoy learning new design approaches, exploring digital tools, and collaborating on projects that enhance my skills. I am eager to grow as a designer and develop user-centered solutions that are both functional and engaging.
+    </p>
+    <div class="socials">
+      <a class="btn" href="mailto:sofiaemeraldazb1@gmail.com">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+        Gmail
+      </a>
+      <a class="btn" href="https://instagram.com/emeraldsft" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.2 6a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+        Instagram
+      </a>
+      <a class="btn" href="https://www.linkedin.com/in/sofia-emeralda-7b8397441?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.05c.53-1 1.83-2 3.77-2 4 0 4.78 2.6 4.78 6V21h-4v-4.9c0-1.2 0-2.7-1.7-2.7s-1.9 1.3-1.9 2.6V21h-4z"/></svg>
+        LinkedIn
+      </a>
+      <a class="btn" href="https://github.com/sofiaemeralda" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+        GitHub
+      </a>
+    </div>
+
+    <!-- CV: put your PDF in the same folder as this file and name it cv.pdf -->
+    <div class="cv-box">
+      <div class="cv-info">
+        <span class="cv-icon">📄</span>
+        <div><strong>My CV</strong><small>PDF document</small></div>
+      </div>
+      <div class="cv-actions">
+        <a class="btn" href="cv.pdf" target="_blank" rel="noopener">View</a>
+        <a class="btn" href="cv.pdf" download="CV-Sofia-Emeralda-Susilo.pdf">Download</a>
+      </div>
+    </div>
+  </div>
+  <p class="scroll-hint">⬇ Scroll down ⬇</p>
+</section>
+
+<!-- ================= 2. WHAT CAN I DO ================= -->
+<section id="skills">
+  <h2 class="title reveal">What Can I Do</h2>
+  <p class="subtitle reveal">Skills and tools I use every day. Tap a card for details ✨</p>
+
+  <div class="skills-grid">
+    <div class="skill reveal">
+      <div class="icon">🎨</div>
+      <h3>Design Graphics</h3>
+      <div class="detail">Creating visual designs such as posters and mobile web layouts.</div>
+    </div>
+    <div class="skill reveal">
+      <div class="icon">🖌️</div>
+      <h3>Canva</h3>
+      <div class="detail">Designing posters and mobile web designs with Canva.</div>
+    </div>
+    <div class="skill reveal">
+      <div class="icon">🐍</div>
+      <h3>Python</h3>
+      <div class="detail">Programming and building small projects with Python.</div>
+    </div>
+    <div class="skill reveal">
+      <div class="icon">🐙</div>
+      <h3>GitHub</h3>
+      <div class="detail">Storing code and managing project versions on GitHub.</div>
+    </div>
+    <div class="skill reveal">
+      <div class="icon">💻</div>
+      <h3>Visual Studio Code</h3>
+      <div class="detail">My everyday code editor for writing and organizing code.</div>
+    </div>
+    <div class="skill reveal">
+      <div class="icon">🔌</div>
+      <h3>Arduino</h3>
+      <div class="detail">Building sensor-based projects such as a rain sensor, automatic lighting, and LED displays.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. PROJECTS ================= -->
+<section id="projects">
+  <h2 class="title reveal">Projects</h2>
+  <p class="subtitle reveal">Some of the projects I have worked on. Tap a card to see more 💖</p>
+
+  <div class="filters reveal">
+    <button class="btn active" data-filter="all">All</button>
+    <button class="btn" data-filter="hardware">Arduino</button>
+    <button class="btn" data-filter="design">Design</button>
+  </div>
+
+  <div class="projects-grid">
+    <article class="project reveal" data-cat="hardware" data-icon="🌧️"
+      data-title="P5 Urban Scale Model"
+      data-desc="Implemented an Arduino-based rain sensor to detect rainfall, developed an automatic lighting system using an Arduino LDR sensor, and programmed a scrolling text display using code to create moving LED text.">
+      <div class="thumb">🌧️💡</div>
+      <div class="body">
+        <h3>P5 Urban Scale Model</h3>
+        <p>Arduino rain sensor, automatic lighting, and scrolling LED text.</p>
+        <div class="tags"><span class="tag">Arduino</span><span class="tag">Rain Sensor</span><span class="tag">LDR Sensor</span><span class="tag">LED</span></div>
+      </div>
+    </article>
+
+    <article class="project reveal" data-cat="design" data-icon="📱"
+      data-title="Mobile Web Design"
+      data-desc="A mobile web design created using Canva.">
+      <div class="thumb">📱</div>
+      <div class="body">
+        <h3>Mobile Web Design</h3>
+        <p>Mobile web design created with Canva.</p>
+        <div class="tags"><span class="tag">Canva</span><span class="tag">UI Design</span></div>
+      </div>
+    </article>
+
+    <article class="project reveal" data-cat="design" data-icon="🖼️"
+      data-title="Poster Design"
+      data-desc="A poster design created using Canva.">
+      <div class="thumb">🖼️</div>
+      <div class="body">
+        <h3>Poster Design</h3>
+        <p>Poster design created with Canva.</p>
+        <div class="tags"><span class="tag">Canva</span><span class="tag">Graphic Design</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<footer>Made with 💗 by Sofia Emeralda Susilo · <span id="year"></span></footer>
+
+<!-- Project detail modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="mIcon" id="mIcon"></div>
+    <h3 id="mTitle"></h3>
+    <p id="mDesc"></p>
+    <div class="actions">
+      <button class="btn" id="mClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn" id="toTop">⬆ Top</button>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Photo click effect
+  document.getElementById('photo').addEventListener('click', e => {
+    e.currentTarget.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.2) rotate(360deg)' }, { transform: 'scale(1)' }],
+      { duration: 700, easing: 'ease-in-out' }
+    );
+  });
+
+  // Skills: tap to open/close
+  document.querySelectorAll('.skill').forEach(s =>
+    s.addEventListener('click', () => s.classList.toggle('open'))
+  );
+
+  // Project filter
+  const filterBtns = document.querySelectorAll('.filters .btn');
+  filterBtns.forEach(btn => btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.project').forEach(p =>
+      p.classList.toggle('hide', f !== 'all' && p.dataset.cat !== f)
+    );
+  }));
+
+  // Project modal
+  const modalBg = document.getElementById('modalBg');
+  document.querySelectorAll('.project').forEach(p => p.addEventListener('click', () => {
+    document.getElementById('mIcon').textContent = p.dataset.icon;
+    document.getElementById('mTitle').textContent = p.dataset.title;
+    document.getElementById('mDesc').textContent = p.dataset.desc;
+    modalBg.classList.add('show');
+  }));
+  const closeModal = () => modalBg.classList.remove('show');
+  document.getElementById('mClose').addEventListener('click', closeModal);
+  modalBg.addEventListener('click', e => { if (e.target === modalBg) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); });
+  }, { threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Progress bar, back-to-top, active menu
+  const progress = document.getElementById('progress');
+  const toTop = document.getElementById('toTop');
+  const links = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('section');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    progress.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    toTop.classList.toggle('show', h.scrollTop > 400);
+    let current = sections[0].id;
+    sections.forEach(s => { if (h.scrollTop >= s.offsetTop - 200) current = s.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  }, { passive: true });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
